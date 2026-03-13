@@ -7,8 +7,48 @@ const PLANTS = [
   { id: 'tree', name: '소나무', emoji: '🌲', maxStage: 4, co2: 10 },
 ];
 
-const STAGE_EMOJIS = ['🫘', '🌱', '🪴', '🌿', '🌸'];
+const STAGE_EMOJIS = {
+  sunflower: ['🫘', '🌱', '🪴', '🌿', '🌻'],
+  tomato: ['🫘', '🌱', '🪴', '🌿', '🍅'],
+  cactus: ['🫘', '🌱', '🪴', '🌿', '🌵'],
+  tree: ['🫘', '🌱', '🪴', '🌿', '🌲'],
+};
+
 const STAGE_NAMES = ['씨앗', '새싹', '줄기', '잎사귀', '꽃/열매'];
+
+const WATER_MESSAGES = {
+  sunflower: ['해바라기가 시원한 물을 좋아해요! 💧', '물을 받아 줄기가 쭉쭉! 💧', '뿌리가 물을 쭉쭉 빨아요 💧'],
+  tomato: ['토마토에게 물을 줬어요! 💧', '빨간 열매가 될 준비 중... 💧', '물을 먹고 잎이 반짝! 💧'],
+  cactus: ['선인장은 물을 조금만 줘도 돼요 💧', '사막 친구에게 물 한 모금! 💧', '물을 저장하고 있어요 💧'],
+  tree: ['소나무 뿌리가 깊이 물을 마셔요 💧', '큰 나무가 될 거예요! 💧', '숲의 향기가 나요 💧'],
+};
+
+const SUN_MESSAGES = {
+  sunflower: ['해바라기가 해를 향해 고개를 돌려요! ☀️', '태양을 따라 빙글빙글 ☀️', '광합성 파워 충전! ☀️'],
+  tomato: ['토마토가 따뜻한 햇살을 받아요 ☀️', '달콤한 열매를 만드는 중... ☀️', '비타민 D 충전! ☀️'],
+  cactus: ['선인장은 뜨거운 태양도 좋아해요 ☀️', '사막의 태양 아래 끄떡없어요 ☀️', '가시가 더 튼튼해져요 ☀️'],
+  tree: ['소나무가 햇빛을 가득 받아요 ☀️', '솔잎에서 산소가 팡팡! ☀️', '나이테가 하나 더 생길지도? ☀️'],
+};
+
+const STAGE_UP_MESSAGES = {
+  sunflower: ['', '🌱 작은 새싹이 흙을 뚫고 나왔어요!', '🪴 줄기가 하늘을 향해 쑥쑥!', '🌿 넓은 잎이 펼쳐졌어요!', '🌻 드디어 해바라기꽃이 활짝!'],
+  tomato: ['', '🌱 귀여운 새싹이 나왔어요!', '🪴 줄기가 단단해지고 있어요!', '🌿 잎사귀가 무성해졌어요!', '🍅 빨간 방울토마토가 열렸어요!'],
+  cactus: ['', '🌱 작은 선인장 아기가 태어났어요!', '🪴 몸통이 조금씩 커지고 있어요!', '🌿 가시가 돋아나기 시작했어요!', '🌵 멋진 선인장으로 자랐어요!'],
+  tree: ['', '🌱 솔잎 새싹이 올라왔어요!', '🪴 어린 나무가 되었어요!', '🌿 가지가 뻗어나가고 있어요!', '🌲 우뚝 솟은 소나무가 되었어요!'],
+};
+
+function getTimeStr() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const period = h < 12 ? '오전' : '오후';
+  const hour12 = h % 12 || 12;
+  return `${period} ${hour12}:${m}`;
+}
+
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 function getInitialPlantState() {
   return {
@@ -29,13 +69,19 @@ function Grow({ onOpenAr }) {
     setState({
       ...getInitialPlantState(),
       selectedPlant: plant,
-      log: [`${plant.name} 씨앗을 심었어요! 🫘`],
+      log: [{
+        type: 'start',
+        text: `${plant.name} 씨앗을 심었어요!`,
+        emoji: '🫘',
+        time: getTimeStr(),
+      }],
     });
   }
 
   function doAction(action) {
     setState((prev) => {
       if (!prev.selectedPlant) return prev;
+      const plantId = prev.selectedPlant.id;
 
       const isWater = action === 'water';
       const newWater = Math.min(100, prev.water + (isWater ? 20 : -5));
@@ -44,16 +90,38 @@ function Grow({ onOpenAr }) {
       const newStage = Math.min(prev.selectedPlant.maxStage, Math.floor(newExp / 30));
       const co2Gained = prev.selectedPlant.co2 * 0.1;
       const stageUp = newStage > prev.stage;
+      const time = getTimeStr();
 
-      const logEntry = isWater
-        ? '물을 주었어요! 💧'
-        : '햇빛을 쐬었어요! ☀️';
+      const actionEntry = {
+        type: isWater ? 'water' : 'sun',
+        text: isWater ? pickRandom(WATER_MESSAGES[plantId]) : pickRandom(SUN_MESSAGES[plantId]),
+        emoji: isWater ? '💧' : '☀️',
+        time,
+        co2: `+${Math.round(co2Gained * 100) / 100}kg`,
+      };
 
-      const newLog = [
-        ...(stageUp ? [`🎉 ${STAGE_NAMES[newStage]} 단계로 성장했어요!`] : []),
-        logEntry,
-        ...prev.log,
-      ].slice(0, 10);
+      const entries = [actionEntry];
+
+      if (stageUp) {
+        entries.unshift({
+          type: 'milestone',
+          text: STAGE_UP_MESSAGES[plantId][newStage],
+          emoji: '🎉',
+          time,
+          stage: newStage,
+        });
+      }
+
+      if (newStage >= prev.selectedPlant.maxStage && prev.stage < prev.selectedPlant.maxStage) {
+        entries.unshift({
+          type: 'complete',
+          text: `${prev.selectedPlant.name}가 완전히 자랐어요! 축하해요!`,
+          emoji: '🏆',
+          time,
+        });
+      }
+
+      const newLog = [...entries, ...prev.log].slice(0, 20);
 
       return {
         ...prev,
@@ -94,6 +162,8 @@ function Grow({ onOpenAr }) {
     );
   }
 
+  const plantId = state.selectedPlant.id;
+  const stageEmojis = STAGE_EMOJIS[plantId];
   const isMaxStage = state.stage >= state.selectedPlant.maxStage;
 
   return (
@@ -109,7 +179,7 @@ function Grow({ onOpenAr }) {
 
       <div className="grow-stage-display">
         <div className="grow-plant-emoji">
-          {isMaxStage ? state.selectedPlant.emoji : STAGE_EMOJIS[state.stage]}
+          {stageEmojis[state.stage]}
         </div>
         <div className="grow-stage-label">
           {isMaxStage
@@ -174,19 +244,33 @@ function Grow({ onOpenAr }) {
       <button
         className="action-button ar-button"
         onClick={() => {
-          if (typeof onOpenAr === 'function') onOpenAr();
+          if (typeof onOpenAr === 'function') onOpenAr(state.selectedPlant);
         }}
       >
-        🔍 AR로 광합성 보기
+        🔍 AR로 {state.selectedPlant.name} 광합성 보기
       </button>
 
       <div className="grow-log">
-        <h3>📋 성장 일지</h3>
-        <ul>
+        <h3>📋 {state.selectedPlant.name} 성장 일지</h3>
+        <div className="log-entries">
           {state.log.map((entry, i) => (
-            <li key={i}>{entry}</li>
+            <div key={i} className={`log-entry log-${entry.type}`}>
+              <div className="log-left">
+                <span className="log-emoji">{entry.emoji}</span>
+                {entry.type === 'milestone' && (
+                  <div className="log-stage-badge">Lv.{entry.stage}</div>
+                )}
+              </div>
+              <div className="log-content">
+                <p className="log-text">{entry.text}</p>
+                <div className="log-meta">
+                  <span className="log-time">{entry.time}</span>
+                  {entry.co2 && <span className="log-co2">{entry.co2} CO₂</span>}
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );

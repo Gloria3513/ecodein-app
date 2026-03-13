@@ -1176,3 +1176,126 @@ button {
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* ===== Growth Log Entries ===== */
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.log-entry {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 14px;
+  background: #f8faf8;
+  border-left: 3px solid #c8e6c9;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.log-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.log-emoji {
+  font-size: 1.4rem;
+}
+
+.log-stage-badge {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.log-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.log-text {
+  font-size: 0.85rem;
+  color: #2d3436;
+  line-height: 1.5;
+  margin: 0;
+  word-break: keep-all;
+}
+
+.log-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.3rem;
+}
+
+.log-time {
+  font-size: 0.7rem;
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+.log-co2 {
+  font-size: 0.7rem;
+  color: #27ae60;
+  font-weight: 600;
+  background: #e8fdf0;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+}
+
+/* Log entry type variants */
+.log-start {
+  background: linear-gradient(135deg, #fff9e6, #fff3cd);
+  border-left-color: #f39c12;
+}
+
+.log-water {
+  background: linear-gradient(135deg, #e8f4fd, #d6eef8);
+  border-left-color: #3498db;
+}
+
+.log-sun {
+  background: linear-gradient(135deg, #fffde8, #fff9c4);
+  border-left-color: #f1c40f;
+}
+
+.log-milestone {
+  background: linear-gradient(135deg, #e8fdf0, #c8f7dc);
+  border-left-color: #2ecc71;
+  border-left-width: 4px;
+}
+
+.log-milestone .log-text {
+  font-weight: 600;
+  color: #1a5c2a;
+}
+
+.log-complete {
+  background: linear-gradient(135deg, #fef3e8, #fde8d0);
+  border-left-color: #e67e22;
+  border-left-width: 4px;
+}
+
+.log-complete .log-text {
+  font-weight: 700;
+  color: #d35400;
+}

@@ -15,10 +15,10 @@ const TABS = [
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [showAr, setShowAr] = useState(false);
+  const [arPlant, setArPlant] = useState(null);
 
-  if (showAr) {
-    return <ArView onClose={() => setShowAr(false)} />;
+  if (arPlant) {
+    return <ArView plantId={arPlant.id} onClose={() => setArPlant(null)} />;
   }
 
   return (
@@ -31,7 +31,7 @@ function App() {
 
       <main className="app-main">
         {activeTab === 'home' && <Home />}
-        {activeTab === 'grow' && <Grow onOpenAr={() => setShowAr(true)} />}
+        {activeTab === 'grow' && <Grow onOpenAr={(plant) => setArPlant(plant)} />}
         {activeTab === 'learn' && <Learn />}
         {activeTab === 'calculator' && <CarbonCalculator />}
       </main>
