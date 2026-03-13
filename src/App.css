@@ -3,6 +3,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  overflow-x: hidden;
 }
 
 body {
@@ -10,6 +16,8 @@ body {
   background: #f0faf4;
   color: #2d3436;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
 }
 
 /* ===== App Layout ===== */
@@ -61,6 +69,7 @@ body {
   border-top: 1px solid #e8f5e9;
   box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.05);
   z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .tab-button {
@@ -70,6 +79,7 @@ body {
   align-items: center;
   gap: 0.2rem;
   padding: 0.6rem 0;
+  min-height: 52px;
   border: none;
   background: none;
   cursor: pointer;
@@ -888,4 +898,281 @@ body {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   white-space: nowrap;
+}
+
+/* ===== Calculator: Challenge Card ===== */
+.calc-challenge {
+  background: linear-gradient(135deg, #fff9c4, #fff3e0);
+  border: 2px solid #ffcc02;
+  border-radius: 20px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.challenge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.challenge-badge {
+  background: #ff9800;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+}
+
+.challenge-complete {
+  color: #27ae60;
+  font-weight: 700;
+  font-size: 0.85rem;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.challenge-body {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.challenge-emoji {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.challenge-text {
+  flex: 1;
+}
+
+.challenge-desc {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #5d4037;
+  margin-bottom: 0.2rem;
+}
+
+.challenge-reward {
+  font-size: 0.75rem;
+  color: #8d6e63;
+}
+
+.challenge-button {
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  min-width: 50px;
+}
+
+.challenge-button:hover {
+  background: #f57c00;
+  transform: scale(1.05);
+}
+
+.challenge-done {
+  background: #27ae60;
+  font-size: 1.1rem;
+}
+
+/* ===== Calculator: Earth Gauge ===== */
+.calc-earth-gauge {
+  background: #fff;
+  border: 1px solid #e8f5e9;
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.earth-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.earth-emoji {
+  font-size: 2.5rem;
+  animation: bounce 2s infinite;
+}
+
+.earth-state {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.gauge-bar {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  background: #e8f5e9;
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.gauge-fill {
+  height: 100%;
+  border-radius: 7px;
+  transition: width 0.5s ease;
+}
+
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: #5a7a4a;
+}
+
+/* ===== Calculator: Item Emoji ===== */
+.calc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  background: #fff;
+  border: 1.5px solid #e8f5e9;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  color: #2d3436;
+  min-height: 48px;
+}
+
+.calc-item-emoji {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.calc-item-label {
+  flex: 1;
+  font-weight: 500;
+  text-align: left;
+}
+
+.calc-item-co2 {
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* ===== Calculator: Fun Comparison ===== */
+.result-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #f3e5f5;
+  border-radius: 12px;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.comparison-emoji {
+  font-size: 1.8rem;
+}
+
+.result-comparison p {
+  font-size: 0.9rem;
+  color: #6a1b9a;
+  font-weight: 600;
+}
+
+.eco-celebration {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  animation: pop 0.5s ease;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 380px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .app-header {
+    padding: 1rem 1.2rem;
+  }
+
+  .app-title {
+    font-size: 1.1rem;
+  }
+
+  .plant-select-emoji {
+    font-size: 2.5rem;
+  }
+
+  .grow-plant-emoji {
+    font-size: 4rem;
+  }
+
+  .action-button {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .quiz-question {
+    font-size: 1rem;
+  }
+
+  .quiz-option {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .calc-item {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Active states for touch */
+.tab-button:active {
+  transform: scale(0.95);
+}
+
+.action-button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.plant-select-card:active {
+  transform: scale(0.97);
+}
+
+.quiz-option:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.calc-item:active {
+  transform: scale(0.98);
+}
+
+.quiz-start-button:active {
+  transform: scale(0.97);
+}
+
+/* Prevent text selection on buttons */
+button {
+  -webkit-user-select: none;
+  user-select: none;
 }
