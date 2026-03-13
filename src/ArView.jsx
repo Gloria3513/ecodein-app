@@ -30,6 +30,10 @@ function buildScene(container) {
   marker.setAttribute('smooth', 'true');
   marker.setAttribute('smoothCount', '5');
 
+  // 래퍼: 전체 씬 3배 확대
+  const wrapper = document.createElement('a-entity');
+  wrapper.setAttribute('scale', '3 3 3');
+
   // 땅 (초록 원반)
   const ground = document.createElement('a-cylinder');
   ground.setAttribute('position', '0 0 0');
@@ -37,7 +41,7 @@ function buildScene(container) {
   ground.setAttribute('height', '0.05');
   ground.setAttribute('color', '#4CAF50');
   ground.setAttribute('opacity', '0.8');
-  marker.appendChild(ground);
+  wrapper.appendChild(ground);
 
   // 줄기
   const stem = document.createElement('a-cylinder');
@@ -45,7 +49,7 @@ function buildScene(container) {
   stem.setAttribute('radius', '0.04');
   stem.setAttribute('height', '0.8');
   stem.setAttribute('color', '#2E7D32');
-  marker.appendChild(stem);
+  wrapper.appendChild(stem);
 
   // 잎사귀들
   const leaves = [
@@ -63,7 +67,7 @@ function buildScene(container) {
     el.setAttribute('depth', '0.12');
     el.setAttribute('color', leaf.color);
     el.setAttribute('opacity', '0.9');
-    marker.appendChild(el);
+    wrapper.appendChild(el);
   });
 
   // 꽃
@@ -71,7 +75,7 @@ function buildScene(container) {
   flower.setAttribute('position', '0 0.85 0');
   flower.setAttribute('radius', '0.08');
   flower.setAttribute('color', '#FFEB3B');
-  marker.appendChild(flower);
+  wrapper.appendChild(flower);
 
   // 꽃잎
   for (let i = 0; i < 5; i++) {
@@ -82,7 +86,7 @@ function buildScene(container) {
     petal.setAttribute('position', `${x} 0.85 ${z}`);
     petal.setAttribute('radius', '0.05');
     petal.setAttribute('color', '#FF9800');
-    marker.appendChild(petal);
+    wrapper.appendChild(petal);
   }
 
   // 햇빛 (위에서 내려오는 노란 빛)
@@ -99,7 +103,7 @@ function buildScene(container) {
     el.setAttribute('position', ray.from);
     el.setAttribute('animation', `property: position; from: ${ray.from}; to: ${ray.to}; dur: 2000; delay: ${i * 300}; loop: true; easing: easeInOutSine`);
     el.setAttribute('animation__opacity', 'property: opacity; from: 0.9; to: 0.2; dur: 2000; delay: ' + (i * 300) + '; loop: true; easing: easeInOutSine');
-    marker.appendChild(el);
+    wrapper.appendChild(el);
   });
 
   // CO₂ 파티클 (파란색, 식물 쪽으로 이동)
@@ -117,7 +121,7 @@ function buildScene(container) {
     el.setAttribute('position', p.from);
     el.setAttribute('animation', `property: position; from: ${p.from}; to: ${p.to}; dur: 3000; delay: ${i * 500}; loop: true; easing: easeInOutQuad`);
     el.setAttribute('animation__scale', 'property: scale; from: 1 1 1; to: 0.3 0.3 0.3; dur: 3000; delay: ' + (i * 500) + '; loop: true; easing: easeInOutQuad');
-    marker.appendChild(el);
+    wrapper.appendChild(el);
 
     // CO₂ 라벨
     if (i === 0) {
@@ -128,7 +132,7 @@ function buildScene(container) {
       text.setAttribute('color', '#546E7A');
       text.setAttribute('align', 'center');
       text.setAttribute('animation', 'property: position; from: -0.8 0.45 0.3; to: -0.1 0.65 0.05; dur: 3000; loop: true; easing: easeInOutQuad');
-      marker.appendChild(text);
+      wrapper.appendChild(text);
     }
   });
 
@@ -148,7 +152,7 @@ function buildScene(container) {
     el.setAttribute('animation', `property: position; from: ${p.from}; to: ${p.to}; dur: 2500; delay: ${i * 400}; loop: true; easing: easeOutQuad`);
     el.setAttribute('animation__scale', 'property: scale; from: 0.5 0.5 0.5; to: 1.2 1.2 1.2; dur: 2500; delay: ' + (i * 400) + '; loop: true; easing: easeOutQuad');
     el.setAttribute('animation__opacity', 'property: opacity; from: 0.9; to: 0.1; dur: 2500; delay: ' + (i * 400) + '; loop: true; easing: easeOutQuad');
-    marker.appendChild(el);
+    wrapper.appendChild(el);
 
     // O₂ 라벨
     if (i === 0) {
@@ -159,7 +163,7 @@ function buildScene(container) {
       text.setAttribute('color', '#0288D1');
       text.setAttribute('align', 'center');
       text.setAttribute('animation', 'property: position; from: 0 0.75 0; to: 0.7 1.05 0.4; dur: 2500; loop: true; easing: easeOutQuad');
-      marker.appendChild(text);
+      wrapper.appendChild(text);
     }
   });
 
@@ -173,7 +177,7 @@ function buildScene(container) {
     water.setAttribute('position', `${xOff} 0 0`);
     water.setAttribute('animation', `property: position; from: ${xOff} -0.1 0; to: ${xOff} 0.3 0; dur: 2000; delay: ${i * 600}; loop: true; easing: easeOutQuad`);
     water.setAttribute('animation__opacity', 'property: opacity; from: 0.8; to: 0; dur: 2000; delay: ' + (i * 600) + '; loop: true; easing: easeOutQuad');
-    marker.appendChild(water);
+    wrapper.appendChild(water);
   }
 
   // 광합성 수식 텍스트
@@ -184,8 +188,9 @@ function buildScene(container) {
   formula.setAttribute('color', '#1B5E20');
   formula.setAttribute('align', 'center');
   formula.setAttribute('animation', 'property: opacity; from: 0.5; to: 1; dur: 1500; loop: true; dir: alternate; easing: easeInOutSine');
-  marker.appendChild(formula);
+  wrapper.appendChild(formula);
 
+  marker.appendChild(wrapper);
   scene.appendChild(marker);
 
   const camera = document.createElement('a-entity');
