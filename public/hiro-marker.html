@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiro 마커 - 에코드인</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f0faf4;
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    padding: 2rem;
+    text-align: center;
+  }
+  h1 { color: #1a5c2a; font-size: 1.3rem; margin-bottom: 0.5rem; }
+  p { color: #5a7a4a; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+  .marker-container {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+  }
+  img { width: 280px; height: 280px; }
+  .tip {
+    background: #e8f5e9;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: #2d3436;
+    max-width: 320px;
+  }
+</style>
+</head>
+<body>
+  <h1>🔍 AR 광합성 마커</h1>
+  <p>이 마커를 카메라에 비추면<br>광합성 애니메이션이 나타나요!</p>
+  <div class="marker-container">
+    <img src="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" alt="Hiro Marker" />
+  </div>
+  <div class="tip">
+    <strong>💡 사용법</strong><br>
+    1. 이 페이지를 다른 기기나 종이에 띄워요<br>
+    2. 에코드인 앱에서 "AR로 광합성 보기" 클릭<br>
+    3. 카메라로 이 마커를 비추면 끝!
+  </div>
+</body>
+</html>

@@ -266,6 +266,14 @@ function ArView({ onClose }) {
       {status === 'ready' && (
         <div className="ar-guide">
           <p>📌 Hiro 마커를 카메라에 비춰 보세요!</p>
+          <a
+            className="ar-marker-link"
+            href="/hiro-marker.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📄 마커 열기
+          </a>
         </div>
       )}
 
